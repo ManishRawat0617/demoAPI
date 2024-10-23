@@ -79,9 +79,10 @@ app.post("/api/auth/login", async (req, res) => {
       });
     }
     return res.status(200).json({
+      id: user.id,
       name: user.name,
       email: user.email,
-      id: user.id,
+
       role: user.role,
     });
   } catch (err) {
