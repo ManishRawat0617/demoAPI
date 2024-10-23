@@ -24,6 +24,9 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Prototype of the project");
 });
+app.get("/profile", (req, res) => {
+  res.send("This is the profile page of the app");
+});
 
 // Registering the user
 app.post("/api/auth/register", async (req, res) => {
