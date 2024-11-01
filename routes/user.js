@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const Role = require("../models/roleModel");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+// const jwt = require("jsonwebtoken");
+// const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const secretKey = "123456";
 // const secretKey = crypto.randomBytes(64).toString("hex");
@@ -155,66 +155,66 @@ router.get("/roles/:role", async (req, res) => {
 });
 
 // Form here the addition code
-// JWT Verification Middleware
-const verifyToken = (req, res, next) => {
-  const token = req.headers["authorization"]?.split(" ")[1];
+// // JWT Verification Middleware
+// const verifyToken = (req, res, next) => {
+//   const token = req.headers["authorization"]?.split(" ")[1];
 
-  if (!token) {
-    return res.status(403).json({ message: "Access token is required" });
-  }
+//   if (!token) {
+//     return res.status(403).json({ message: "Access token is required" });
+//   }
 
-  try {
-    const decoded = jwt.verify(token, secretKey);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Token has expired" });
-    } else if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-    return res.status(500).json({ message: "Failed to authenticate token" });
-  }
-};
+//   try {
+//     const decoded = jwt.verify(token, secretKey);
+//     req.user = decoded;
+//     next();
+//   } catch (error) {
+//     if (error.name === "TokenExpiredError") {
+//       return res.status(401).json({ message: "Token has expired" });
+//     } else if (error.name === "JsonWebTokenError") {
+//       return res.status(401).json({ message: "Invalid token" });
+//     }
+//     return res.status(500).json({ message: "Failed to authenticate token" });
+//   }
+// };
 
-// Login Route
-router.post("/api/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+// // Login Route
+// router.post("/api/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
 
-    // Find the user by email
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
+//     // Find the user by email
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(401).json({ message: "Invalid email or password" });
+//     }
 
-    // Compare passwords
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-    // if (!isPasswordValid) {
-    //   return res.status(401).json({ message: "Invalid email or password" });
-    // }
+//     // Compare passwords
+//     // const isPasswordValid = await bcrypt.compare(password, user.password);
+//     // if (!isPasswordValid) {
+//     //   return res.status(401).json({ message: "Invalid email or password" });
+//     // }
 
-    // Generate JWT access token
-    const accessToken = jwt.sign(
-      { userId: user._id, email: user.email, role: user.role },
-      secretKey,
-      { expiresIn: "1h" }
-    );
+//     // Generate JWT access token
+//     const accessToken = jwt.sign(
+//       { userId: user._id, email: user.email, role: user.role },
+//       secretKey,
+//       { expiresIn: "1h" }
+//     );
 
-    res.status(200).json({
-      message: "Login successful",
-      accessToken,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+//     res.status(200).json({
+//       message: "Login successful",
+//       accessToken,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
-// Protected Route Example
-router.get("/api/protected", verifyToken, (req, res) => {
-  res.status(200).json({
-    message: "You have access to this protected route",
-    user: req.user,
-  });
-});
+// // Protected Route Example
+// router.get("/api/protected", verifyToken, (req, res) => {
+//   res.status(200).json({
+//     message: "You have access to this protected route",
+//     user: req.user,
+//   });
+// });
 module.exports = router;
