@@ -1,10 +1,11 @@
 const express = require("express");
+const role = require("../models/role.json");
 
 const router = express.Router();
 const Role = require("../models/roleModel");
 
 router.get("/", (req, res, next) => {
-  res.send("Handling role request ");
+  res.json(role);
 });
 
 router.post("/api/role/register", async (req, res) => {
