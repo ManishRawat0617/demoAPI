@@ -5,8 +5,9 @@ const Role = require("../models/roleModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const secretKey = crypto.randomBytes(64).toString("hex");
-console.log("JWT Secret Key:", secretKey);
+const secretKey = "123456";
+// const secretKey = crypto.randomBytes(64).toString("hex");
+// console.log("JWT Secret Key:", secretKey);
 
 // Getting the profile of the single user
 router.get("/profile", (req, res) => {
