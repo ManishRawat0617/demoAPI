@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const Role = require("../models/roleModel");
+const role = require("../models/role.json");
 
 // Get all roles
 router.get("/", async (req, res, next) => {
   try {
-    const roles = await Role.find(); // Fetch all roles from MongoDB
-    res.json(roles);
+    // const roles = await Role.find(); // Fetch all roles from MongoDB
+    res.json(role);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

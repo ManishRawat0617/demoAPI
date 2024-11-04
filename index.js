@@ -24,7 +24,7 @@ app.use(express.json());
 mongoose
   .connect(
     "mongodb+srv://leowilder1331:9837371512@cluster0.dddhe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/DemoApi",
-    {}
+    { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
     console.log(mongoose.connect.host);
@@ -42,21 +42,6 @@ app.use("/user", userRouter);
 app.use("/role", roleRouter);
 
 app.use("/session", sessionRouter);
-
-app.use((req, res, next) => {
-  const error = new Error("Not Found");
-  error.status(404);
-  next(error);
-});
-
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-    },
-  });
-});
 
 // Define WebRTC signaling
 io.on("connection", (socket) => {
@@ -76,6 +61,21 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("Client disconnected:", socket.id);
+  });
+});
+
+app.use((req, res, next) => {
+  const error = new Error("Not Found");
+  error.status(404);
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    },
   });
 });
 
