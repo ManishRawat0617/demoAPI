@@ -2,8 +2,19 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT_ENV || 8080;
 
+// these are the new modules which are added
+const cors = require("cors");
+const http = require("http");
+const socketIO = require("socket.io");
+const io = socketIO(server);
+
+app.use(cors());
+app.use(express.json());
+
+// Form here all the code is old
 const userRouter = require("./routes/user.js");
 const roleRouter = require("./routes/role.js");
+const sessionRouter = require("./routes/session.js");
 
 const mongoose = require("mongoose");
 app.use(express.json());
@@ -29,6 +40,7 @@ app.use("/user", userRouter);
 
 app.use("/role", roleRouter);
 
+app.use("/session", sessionRouter);
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");
@@ -44,6 +56,28 @@ app.use((error, req, res, next) => {
     },
   });
 });
+
+// Define WebRTC signaling
+io.on("connection", (socket) => {
+  console.log("New client connected:", socket.id);
+
+  socket.on("offer", (data) => {
+    socket.broadcast.emit("offer", data);
+  });
+
+  socket.on("answer", (data) => {
+    socket.broadcast.emit("answer", data);
+  });
+
+  socket.on("candidate", (data) => {
+    socket.broadcast.emit("candidate", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected:", socket.id);
+  });
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server listening at port: ${port}`);

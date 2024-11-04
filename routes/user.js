@@ -129,7 +129,8 @@ router.get("/verify/:accesstoken", async (req, res, next) => {
   }
 });
 
-// FInding user according to the role
+// // FInding user according to the role
+
 router.get("/roles/:role", async (req, res) => {
   try {
     // Extract the role from the URL parameters
