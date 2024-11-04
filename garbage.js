@@ -46,9 +46,37 @@ io.on('connection', (socket) => {
     });
 });
 
+const Session = require('./models/Session');
+
+app.post('/sessions', async (req, res) => {
+    const session = new Session(req.body);
+    await session.save();
+    res.send(session);
+});
+
+app.get('/sessions/:roomId', async (req, res) => {
+    const session = await Session.findOne({ roomId: req.params.roomId });
+    res.send(session);
+});
+
+
 server.listen(3000, () => {
     console.log('Server listening on port 3000');
 });
+
+
+// session MOdel 
+const mongoose = require('mongoose');
+
+const sessionSchema = new mongoose.Schema({
+    roomId: String,
+    offer: Object,
+    answer: Object,
+    candidates: Array,
+    createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('Session', sessionSchema);
 
 
 //
