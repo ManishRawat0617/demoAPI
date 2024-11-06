@@ -129,31 +129,7 @@ router.get("/verify/:accesstoken", async (req, res, next) => {
   }
 });
 
-// // FInding user according to the role
 
-router.get("/roles/:role", async (req, res) => {
-  try {
-    // Extract the role from the URL parameters
-    const { role } = req.params;
-
-    // Find all users that match the given role
-    const users = await User.find({ role: role });
-
-    // Check if any users were found
-    if (!users.length) {
-      return res.status(404).json({ message: "No users found for this role" });
-    }
-
-    // Send the array of users as a response
-    return res.status(200).json({
-      message: "Users found",
-      users: users,
-    });
-  } catch (err) {
-    // Handle errors
-    return res.status(500).json({ message: err.message });
-  }
-});
 
 // Form here the addition code
 // // JWT Verification Middleware
