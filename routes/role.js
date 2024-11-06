@@ -37,14 +37,14 @@ router.post("/api/role/register", async (req, res) => {
 });
 
 // Filter roles by title
-router.get("/api/roles/role", async (req, res) => {
+router.post("/api/roles/role", async (req, res) => {
   try {
     // Extract all the user from the db having this role
- 
+
     const { role } = req.body;
 
+    // const users = await User.find();
     const users = await User.where("role").equals(role);
-    // const users = await User.find(role);
 
     // Check if any users were found
     if (!users.length) {
