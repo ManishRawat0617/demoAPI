@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/userModel");
 const Role = require("../models/roleModel");
 const role = require("../models/role.json");
 
@@ -36,15 +37,25 @@ router.post("/api/role/register", async (req, res) => {
 });
 
 // Filter roles by title
-router.get("/api/roles", async (req, res) => {
+router.get("/api/roles/role", async (req, res) => {
   try {
-    const { title } = req.query;
-    const query = title ? { title: new RegExp(title, "i") } : {}; // Case-insensitive search
-    const filteredRoles = await Role.find(query); // Fetch roles based on query
+    // Extract all the user from the db having this role
+ 
+    const { role } = req.body;
 
-    res.json(filteredRoles);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const users = await User.where("role").equals(role);
+    // const users = await User.find(role);
+
+    // Check if any users were found
+    if (!users.length) {
+      return res.status(404).json({ message: "No users found for this role" });
+    }
+
+    // Send the array of users as a response
+    return res.status(200).json({ users });
+  } catch (error) {
+    // Handle potential errors
+    return res.status(500).json({ message: "Server error", error });
   }
 });
 
