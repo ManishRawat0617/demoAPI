@@ -23,8 +23,7 @@ app.use(express.json());
 // MongoDB is connecting to the API
 mongoose
   .connect(
-    "mongodb+srv://leowilder1331:9837371512@cluster0.dddhe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/DemoApi",
-    { useNewUrlParser: true, useUnifiedTopology: true }
+    "mongodb+srv://leowilder1331:9837371512@cluster0.dddhe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/DemoApi"
   )
   .then(() => {
     console.log(mongoose.connect.host);

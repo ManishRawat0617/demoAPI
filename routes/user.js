@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
-const Role = require("../models/roleModel");
 const jwt = require("jsonwebtoken");
 // const bcrypt = require("bcrypt");
 const crypto = require("crypto");
@@ -98,7 +97,8 @@ router.post("/auth/login", async (req, res) => {
       id: user.id,
       // name: user.name,
       // email: user.email,
-
+      userName: user.name,
+      email: user.email,
       role: user.role,
       accesstoken: accesstoken,
     });
@@ -128,8 +128,6 @@ router.get("/verify/:accesstoken", async (req, res, next) => {
     });
   }
 });
-
-
 
 // Form here the addition code
 // // JWT Verification Middleware
