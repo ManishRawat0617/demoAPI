@@ -8,6 +8,7 @@ const secretKey = "123456";
 // const secretKey = crypto.randomBytes(64).toString("hex");
 // console.log("JWT Secret Key:", secretKey);
 
+
 // Getting the profile of the single user
 router.get("/profile", (req, res) => {
   res.send("This is the profile page of the app");
