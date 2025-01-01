@@ -49,4 +49,23 @@ async function handleRegisterUser(req, res, next) {
   } catch (error) {}
 }
 
+async function handleLoginUser(req, res, next) {
+  const { email, password } = req.body;
 
+  try {
+    const token = await User.matchPasswordAndGenerateToken(
+      email.toLowerCase(),
+      password
+    );
+
+    return rs.status(200).json({
+      token: token,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
+
+module.exports = { handleGetAllUser, handleRegisterUser, handleLoginUser };
